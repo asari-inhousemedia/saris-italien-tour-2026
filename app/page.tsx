@@ -168,9 +168,18 @@ const budget = [
   { item: "Puffer", cost: "52" },
 ];
 
+const heroSlides = [
+  { src: "/images/hero-florenz-1.jpg", alt: "Ponte Vecchio, Florenz" },
+  { src: "/images/hero-elba-1.jpg", alt: "Spiaggia di Sansone, Elba" },
+  { src: "/images/hero-florenz-2.jpg", alt: "Panorama von Florenz" },
+  { src: "/images/hero-elba-2.jpg", alt: "Portoferraio, Elba" },
+  { src: "/images/hero-toskana.jpg", alt: "Toskanische Zypressen" },
+];
+
 export default function Home() {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0 });
   const [showBudget, setShowBudget] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -195,25 +204,36 @@ export default function Home() {
     return () => clearInterval(id);
   }, []);
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <>
       {/* ===== HERO ===== */}
       <section ref={heroRef} className="relative h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-olive/80 to-dark" />
         <motion.div
           style={{ y: heroY }}
           className="absolute inset-x-0 -top-[200px] bottom-0"
         >
-          <Image
-            src="/images/hero.jpg"
-            alt="Toskanische Landschaft"
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
+          {heroSlides.map((slide, i) => (
+            <Image
+              key={slide.src}
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              priority={i === 0}
+              className={`object-cover transition-opacity duration-[2000ms] ${
+                i === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+              sizes="100vw"
+            />
+          ))}
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/10 to-dark/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-dark/50 via-dark/20 to-dark/70" />
 
         <motion.div
           style={{ opacity: heroOpacity }}
@@ -271,9 +291,22 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.8 }}
-            className="absolute bottom-10"
+            className="absolute bottom-10 flex flex-col items-center gap-6"
             aria-hidden
           >
+            <div className="flex gap-2">
+              {heroSlides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className={`w-2 h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                    i === currentSlide
+                      ? "bg-white w-6"
+                      : "bg-white/40 hover:bg-white/60"
+                  }`}
+                />
+              ))}
+            </div>
             <motion.div
               animate={{ y: [0, 12, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
