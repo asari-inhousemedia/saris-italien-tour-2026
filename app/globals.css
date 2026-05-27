@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: #FDF6EC;
+  --color-terracotta: #C45A3C;
+  --color-terracotta-dark: #A04030;
+  --color-olive: #5C6B4E;
+  --color-gold: #D4A843;
+  --color-dark: #2C1810;
+  --color-sand: #E8DCC8;
+  --color-warm-gray: #8B7D6B;
+  --color-sea: #4A7C9B;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-lato), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  color: var(--color-dark);
+  overflow-x: hidden;
+}
+
+.leaflet-container {
+  z-index: 1;
+}
+
+.custom-marker {
+  background: none !important;
+  border: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-terracotta);
+  border-radius: 3px;
 }
